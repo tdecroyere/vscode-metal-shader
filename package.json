@@ -1,0 +1,25 @@
+{
+    "name": "metal-shader",
+    "displayName": "Metal Shader",
+    "description": "Apple Metal Shader Support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.40.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "metal",
+            "aliases": ["Metal Shader", "metal"],
+            "extensions": ["metal"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "metal",
+            "scopeName": "source.metal",
+            "path": "./syntaxes/metal.tmLanguage.json"
+        }]
+    }
+}

@@ -1,0 +1,310 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Metal Shader",
+	"scopeName": "source.metal",
+	"patterns": [
+		{ "include": "#general" },
+		{ "include": "#types" },
+		{ "include": "#properties_functions" },
+		{ "include": "#struct-definition" },
+		{ "include": "#function-definition" }
+	],
+	"repository": {
+		"general": 
+		{
+			"patterns": [
+				{
+					"name": "comment.line.block.metal",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.line.double-slash.metal",
+					"begin": "//",
+					"end": "$"
+				},
+				{
+					"name": "constant.numeric.metal",
+					"match": "\\b([0-9]+\\.?[0-9]*)\\b"
+				},
+				{
+					"name": "constant.numeric.metal",
+					"match": "\\b(\\.[0-9]+)\\b"
+				},
+				{
+					"name": "constant.numeric.hex.metal",
+					"match": "\\b(0x[0-9A-F]+)\\b"
+				},
+				{
+					"name": "constant.language.metal",
+					"match": "\\b(false|true)\\b"
+				},
+				{
+					"name": "keyword.control.metal",
+					"match": "\\b(break|case|continue|default|discard|do|else|for|if|return|switch|while)\\b"
+				},
+				{
+					"name": "keyword.other.metal",
+					"match": "\\b(kernel|vertex|fragment|static)\\b"
+				},
+				{
+					"name": "keyword.typealias.metal",
+					"match": "\\b(typedef)\\b"
+				},
+				{
+					"match": "(#include|#import)\\s(<.*>|\".*\")",
+					"captures": {
+						"1": { "name": "keyword.control.directive.include.metal" },
+						"2": { "name": "string.quoted.double.metal" }
+					}
+				},
+				{
+					"match": "(#if|#endif)\\s*(\\w*)",
+					"captures": {
+						"1": { "name": "keyword.other.metal" },
+						"2": { "name": "variable.metal" }
+					}
+				},
+				{
+					"match": "(using)\\s(namespace)\\s(.*)",
+					"captures": {
+						"1": { "name": "keyword.control.directive.using.metal" },
+						"2": { "name": "keyword.other.namespace.metal" },
+						"3": { "name": "entity.name.namespace.metal" }
+					}
+				},
+				{
+					"match": "\\b(\\w+)\\:\\:(\\w+)\\b",
+					"captures": {
+						"1": { "name": "entity.name.type.metal" },
+						"2": { "name": "variable.metal" }
+					}
+				},
+				{
+					"match": "\\b((?:\\w|\\<|\\>|\\s)+)\\s+(?:\\**|&*)\\s*(\\w+)\\s*=?\\s*((?:\\w|\\.|\\[|\\]|\\(|\\))+);",
+					"captures": {
+						"1": { "patterns": [
+							{
+								"include": "#types"
+							},
+							{
+								"name": "keyword.control.metal",
+								"match": "\\b(return)\\b"
+							},
+							{
+								"name": "entity.name.type.metal",
+								"match": "\\b(\\w+)\\b"
+							}
+						] },
+						"3": { "patterns": [
+							{
+								"include": "#types"
+							},
+							{
+								"include": "#properties_functions"
+							}
+						] }
+					}
+				},
+				{
+					"name": "constant.character.escape.metal",
+					"match": "\\\\."
+				}
+			]
+		},
+		"struct-definition": {
+			"begin": "\\b(struct)\\s*(\\w*)\\s*({*)",
+			"beginCaptures": {
+				"1": { "name": "storage.type.strutured.metal" },
+				"2": { "name": "entity.name.type.metal" },
+				"3": { "name": "punctuation.separator.begin-struct-definition.metal" }
+			},
+			"end": "(})\\s*(\\w*);",
+			"endCaptures": {
+				"1": { "name": "punctuation.separator.end-struct-definition.metal" },
+				"2": { "name": "entity.name.type.metal" }
+			},
+			"name": "meta.type.metal",
+			"patterns": [
+				{
+					"match": "((?:\\w|\\<|\\>|,|\\s)+)\\s+(?:\\**|&*)(\\w+)\\s*(?:\\[\\[\\s*(\\w+)\\(*(\\w*)\\)*\\s*\\]\\])*;",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"include": "#types"
+								},
+								{
+									"name": "entity.name.type.metal",
+									"match": "\\b(\\w+)\\b"
+								}
+							]
+						},
+						"2": {
+							"name": "variable.metal"
+						},
+						"3": { "name": "entity.name.function.metal" }
+
+					},
+					"name": "meta.variable.metal"
+				}
+			]
+		},
+		"function-definition": {
+			"begin": "\\b((?:\\w|\\<|\\>|,|\\s)+)\\s+(\\w+)\\s*\\(",
+			"beginCaptures": {
+				"1": { "patterns": [
+					{
+						"include": "#types"
+					},
+					{
+						"name": "entity.name.type.metal",
+						"match": "\\b(\\w+)\\b"
+					}
+				] },
+				"2": { "name": "entity.name.function.metal" },
+				"3": { "name": "punctuation.separator.begin-function-definition.metal" }
+			},
+			"end": "(?<=\\{)|;",
+			"endCaptures": {
+				"0": { "name": "punctuation.separator.end-function-definition.metal" }
+			},
+			"name": "meta.function.metal",
+			"patterns": [
+				{
+					"match": "((?:\\w|\\<|\\>|,|\\s|\\:)+)(?:\\**|&*)\\s+(?:\\**|&*)(\\w+)\\s*(?:\\[\\[\\s*(\\w+)\\(*(\\w*)\\)*\\s*\\]\\])*",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"include": "#types"
+								},
+								{
+									"name": "entity.name.type.metal",
+									"match": "\\b(\\w+)\\b"
+								}
+							]
+						},
+						"2": {
+							"name": "variable.parameter.metal"
+						},
+						"3": { "name": "entity.name.function.metal" }
+
+					},
+					"name": "meta.variable.parameter.metal"
+				}
+			]
+		},
+		"properties_functions": 
+		{
+			"patterns": [
+				{
+					"match": "((?:\\w|\\[|\\])+)\\.(\\w+)\\(",
+					"captures": {
+						"2": { "name": "entity.name.function.metal" }
+					}
+				},
+				{
+					"match": "((?:\\w|\\[|\\])+)\\s*\\(",
+					"captures": {
+						"1": { "name": "entity.name.function.metal" }
+					}
+				},
+				{
+					"match": "((?:\\w|\\[|\\])+)\\.(\\w+)\\.(\\w+)",
+					"captures": {
+						"2": { "name": "variable.metal" },
+						"3": { "name": "variable.metal" }
+					}
+				},
+				{
+					"match": "((?:\\w|\\[|\\])+)\\.(\\w+)",
+					"captures": {
+						"2": { "name": "variable.metal" }
+					}
+				}
+			]
+		},
+		"types": 
+		{
+			"patterns": [
+				{
+					"name": "storage.modifier.metal",
+					"match": "\\b(const|constant|device|constexpr)\\b"
+				},
+				{
+					"name": "entity.name.function.metal",
+					"match": "\\b(vertex_id|instance_id|draw_id|stage_in)\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(float4x4)\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(bool(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(char(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(short(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(int(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(long(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(uchar(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(ushort(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(uint(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(ulong(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(half(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(float(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(vector_float(?:2|3|4*))\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(texture(?:2|3|4*)d)\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(array)\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(sampler)\\b"
+				},
+				{
+					"name": "storage.type.scalar.metal",
+					"match": "\\b(void)\\b"
+				}
+			]
+		}
+	}
+}
