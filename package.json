@@ -6,7 +6,7 @@
     },
     "displayName": "Metal Shader Extension for Visual Studio Code",
     "description": "This extension provides basic support for Apple Metal Shading language. If you have any issues, want to participate or have any suggestions feel free to participate to the project: https://github.com/tdecroyere/vscode-metal-shader",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "engines": {
         "vscode": "^1.40.0"
     },
