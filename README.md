@@ -12,6 +12,10 @@ For the moment, the extension provides only syntax colorization. More features w
 
 ## Release Notes
 
+### 1.0.5
+
+* Fix small bugs in struct parameters.
+
 ### 1.0.0
 
 Initial release of Metal Shader Extension for Visual Studio Code.
